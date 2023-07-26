@@ -42,7 +42,8 @@ export default function InputField(props){
     return (
       <>
         <input type="text" 
-               className="InputField" 
+               className="InputField"
+               placeholder={`Line ${line+1}`} 
                ref={inputRef}
                onKeyPress={handleKeyPress}
                onClick={handleOnClick}

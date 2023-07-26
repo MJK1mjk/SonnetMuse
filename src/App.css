@@ -1,8 +1,19 @@
-.Input-Container{
-    display: flex;
-    flex-direction: column;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.Input-Container {
+  min-width: 75%;
+  display: flex;
+  flex-direction: column;
 }
 
 input {
-    margin: 10px;
+  margin: 10px;
+}
+
+main {
+  display: flex;
 }

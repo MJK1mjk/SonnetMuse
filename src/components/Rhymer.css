@@ -1,0 +1,8 @@
+.RhymeTab{
+    height: 600px;
+}
+
+.RhymeList {
+    overflow: auto;
+    height: 100%;
+}
