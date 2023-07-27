@@ -7,16 +7,10 @@ export default function InputField(props){
     const inputRef = useRef();
     const [syllable,setSyllable] = useState(0);
     const [value,setValue] = useState("");
-    const {changeValid,changeRhyme,changeActive,valid,line} =props;
-    let validCheck=valid[line];
-
+    const {changeRhyme,changeActive,valid,line} =props;
 
     useEffect(() => {
       let check = syllable===10;
-      if(check!=validCheck)
-      {
-        changeValid(check,line);
-      }
       if(check)
       {
         let word=value.split(" ").slice(-1)[0];
@@ -42,7 +36,7 @@ export default function InputField(props){
     return (
       <>
         <input type="text" 
-               className="InputField"
+               className={`InputField ${valid[line] ? 'correct' : 'wrong'}`}
                placeholder={`Line ${line+1}`} 
                ref={inputRef}
                onKeyPress={handleKeyPress}

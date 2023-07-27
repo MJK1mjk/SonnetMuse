@@ -6,27 +6,23 @@ import "./App.css";
 import rhymesWith from "rhymes-with";
 
 function App() {
-  const [rhymes, setRhymes] = useState([]);
-  const [valid, setValid] = useState([]);
-  const [checkLine, setCheckLine] = useState([]);
+  const [rhymes, setRhymes] = useState(new Array(14).fill(""));
+  const [valid, setValid] = useState(new Array(14).fill(false));
   const [active, setActive] = useState(-1);
 
-  useEffect(() => {
-    const Rhymes = [];
-    const Valid = [];
-    const CheckLines = [];
-    for (let i = 0; i < 14; i++) {
-      Rhymes.push("");
-      Valid.push(false);
-      CheckLines.push(false);
-    }
-    setRhymes(Rhymes);
-    setValid(Valid);
-    setCheckLine(CheckLines);
-  }, []);
+  // useEffect(() => {
+  //   const Rhymes = [];
+  //   const Valid = [];
+  //   for (let i = 0; i < 14; i++) {
+  //     Rhymes.push("");
+  //     Valid.push(false);
+  //   }
+  //   setRhymes(Rhymes);
+  //   setValid(Valid);
+  // }, []);
 
   useEffect(() => {
-    let CheckLines = checkLine;
+    let newValid = [...valid];
     for (let i = 0; i < 14; i++) {
       if(rhymes[i])
       {
@@ -34,25 +30,17 @@ function App() {
         if(word)
         {
           const check= rhymesWith(rhymes[i],word);
-          if(check) CheckLines[i]=true;
-          else CheckLines=false;
+          if(check) newValid[i]=true;
+          else newValid[i]=false;
         }
       }
     }
-    setCheckLine(CheckLines);
+    setValid(newValid);
   }, [rhymes]);
 
-  const changeValid = (val, id) => {
-    let arr = valid;
-    if (arr[id] != val) {
-      arr[id] = val;
-      setValid(arr);
-    }
-  };
-
   const changeRhyme = (val, id) => {
-    let arr = rhymes;
-    if (arr[id] != val) {
+    let arr = [...rhymes];;
+    if (arr[id] !== val) {
       arr[id] = val;
       setRhymes(arr);
     }
@@ -65,7 +53,6 @@ function App() {
     inputFields.push(
       <InputField
         key={`line-${i}`}
-        changeValid={changeValid}
         changeRhyme={changeRhyme}
         changeActive={changeActive}
         valid={valid}
@@ -76,7 +63,10 @@ function App() {
 
   return (
     <main>
-      <div className="Input-Container">{inputFields.map((a) => a)}</div>
+      <div className="Input-Container">
+        <input type="text" key="title" className="title"/>
+        {inputFields.map((a) => a)}
+      </div>
       <Tabs rhymes={rhymes} active={active} />
     </main>
   );

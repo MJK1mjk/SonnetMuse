@@ -17,3 +17,9 @@ input {
 main {
   display: flex;
 }
+
+input[type="text"], input[type="password"], textarea {
+  border: none;
+  outline: none;
+  /* border-bottom: 1px solid #ccc;  */
+}

@@ -1,29 +1,29 @@
 .Tabs {
   width: 100%;
-  height: auto;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
   min-height: 400px;
-  margin: 0rem auto 1.5rem;
-  padding: 2rem 1rem;
+  background-color: lightgreen;
+  margin: 1.5rem auto;
+  padding: 1rem 1rem;
   border-radius: 2rem;
 }
 
 ul.nav {
-  width: 60%;
-  margin: 0 auto 2rem;
+  width: 90%;
+  margin: 0 auto 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid #39a2db;
   border-radius: 2rem;
   padding-left: 0px;
-  @media (max-width: 768px) {
-    width: 90%;
-  }
 }
 
 ul.nav li {
   width: 50%;
-  padding: 1rem;
+  padding: 0.75rem;
   list-style: none;
   text-align: center;
   cursor: pointer;
@@ -45,3 +45,7 @@ ul.nav li:hover {
 ul.nav li.active {
   background: #39a2db;
 }
+
+/* div.outlet{
+  flex-basis: 60%;
+} */

@@ -1,8 +1,72 @@
-.RhymeTab{
-    height: 600px;
+.container{
+    height: 80vh;
+    @media screen and (max-height: 700px){
+        height: 70vh;
+    }
 }
 
-.RhymeList {
+.list {
     overflow: auto;
-    height: 100%;
+    height: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 2rem;
+}
+
+.rhymes li {
+    font-size: 1.15rem;
+    margin: 0.25rem 0;
+    flex-basis: 50%;
+    list-style: none;
+    padding-left: 10px;
+}
+
+ul.definitions{
+    list-style-type: "•";
+    padding-left: 1ch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+ul.definitions li{
+    font-size: 1.15rem;
+    padding-left: 0.15rem;
+    margin: 0.25rem 0;
+    & span{
+    font-style: italic;
+    font-weight: lighter;
+    font-size: 0.75rem;
+    padding-left: 0;
+ }
+}
+
+p{
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    padding: 0 0 0.5rem;
+    border-bottom: 1px solid red;
+    border-radius: 5px;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid red;
+    border-radius: 5px;
+}
+
+#word-def{
+        height: 1.75rem;
+        flex-basis: 75%;
+        border: #83c5be solid 1px;
+        border-radius: 10px;
+}
+
+#word-def-button{
+        height: 1.75rem;
+        flex-basis: 20%;
+        border: #83c5be solid 1px;
+        border-radius: 10px;
 }
