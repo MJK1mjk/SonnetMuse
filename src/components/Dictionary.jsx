@@ -46,7 +46,7 @@ export default function Dictionary(){
           <button onClick={handleClick} id="word-def-button">Search</button>
         </form>
         {data && (
-        <ul className="definitions list">
+        <ul className="list definitions">
           {data.map((item,i) => (
             <li key={`d${i}`}><span>{item.part }</span>  {item.def}</li>
           ))}

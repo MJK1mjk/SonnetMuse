@@ -1,0 +1,19 @@
+input{
+    height: 1.6rem;
+    width: 90%;
+    font-size: 1.25rem;
+}
+
+input.wrong{
+    color: #e62e00 ;
+}
+
+input.correct{
+    color: #002366;
+    font-style: italic;
+}
+
+input:focus{
+    color: #1a1a1a;
+}
+

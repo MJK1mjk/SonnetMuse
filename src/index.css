@@ -1,1 +1,17 @@
+* {
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 
+body{
+  background-color: #d6eadf;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  border: none;
+  outline: none;
+}

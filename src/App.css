@@ -1,25 +1,70 @@
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+main {
+  display: flex;
+  gap: 0.5vw;
+  z-index: -1;
 }
 
 .Input-Container {
+  height: 95vh;
+  margin: 1.5rem auto;
+  padding: 1rem 1rem;
+  border-radius: 2rem;
   min-width: 75%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: sans-serif;
+
+  background-color: #f8f8f8;
+  opacity: 1;
+  background-image:  radial-gradient(#d9bf77 0.5px, transparent 0.5px), radial-gradient(#d9bf77 0.5px, #f8f8f8 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0,10px 10px;
+  & input {
+    background-color: #f8f8f8;
+    opacity: 1;
+    background-image:  radial-gradient(#d9bf77 0.5px, transparent 0.5px), radial-gradient(#d9bf77 0.5px, #f8f8f8 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0,10px 10px;
+  }
 }
 
-input {
-  margin: 10px;
+input::placeholder {
+  color: #495057;
+  font-size: 1rem;
 }
 
-main {
+input.title {
+  color: #002366;
+  font-weight: 500;
+  height: 2.25rem;
+  font-size: 1.75rem;
+  width: 75%;
+  text-align: center;
+  font-style: italic;
+  &::placeholder{
+    font-size: 1rem;
+    font-style: none;
+  }
+}
+
+nav{
   display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem 0 3rem;
+  z-index: -1;
+  & button{
+    border: none;
+    background-color: inherit;
+  }
 }
 
-input[type="text"], input[type="password"], textarea {
-  border: none;
-  outline: none;
-  /* border-bottom: 1px solid #ccc;  */
+h1{
+  font-size: 2.5rem;
+  font-size: 40px;
+  font-style: italic;
+  color: #4c2f27;
+  font-family: 'Dancing Script', cursive;
+  font-size: 700;
 }
