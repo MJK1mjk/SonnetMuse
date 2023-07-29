@@ -16,24 +16,25 @@
   scrollbar-color: #b388eb #eac4d5;
   scrollbar-width: thin;
 
-  &::-webkit-scrollbar {
-    width: 10px;
-    @media screen and (max-width: 600px){
-        width: 5px;
-    }
-  }
+}
 
-  &::-webkit-scrollbar-track {
-    background-color: #eac4d5;
+.list::-webkit-scrollbar {
+  width: 10px;
+  @media screen and (max-width: 600px){
+      width: 5px;
   }
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #b388eb;
-    border-radius: 5px;
-    border: #b388eb solid 1px;
-    @media screen and (max-width: 600px){
-        border-radius: 3px;
-    }
+.list::-webkit-scrollbar-track {
+  background-color: #eac4d5;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #b388eb;
+  border-radius: 5px;
+  border: #b388eb solid 1px;
+  @media screen and (max-width: 600px){
+      border-radius: 3px;
   }
 }
 

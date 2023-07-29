@@ -43,7 +43,7 @@ p.modal-data {
   font-size: 500;
 }
 
-a.modal-example, a.modal-example:visited {
+a.modal-example,a.modal-example:visited {
   color: #444444;
   padding-left: 1rem;
 }
@@ -51,7 +51,7 @@ div.content {
   margin-top: 2rem;
 }
 
-a.Repo-Link {
+a.Repo-Link,a.Repo-Link:visited {
   margin-top: 2rem;
   margin-left: 1rem;
   color: #444444;
