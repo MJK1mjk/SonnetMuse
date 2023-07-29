@@ -1,17 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import { syllableCount } from "syllable-count-english";
+import {syllable} from 'syllable'
 import './InputField.css'
 
 const punctuation = [".", "?", "!", ",", ";", ":", "-"," "];
 
 export default function InputField(props) {
   const inputRef = useRef();
-  const [syllable, setSyllable] = useState(0);
+  const [syllablesCount, setSyllable] = useState(0);
   const [value, setValue] = useState("");
   const { changeRhyme, changeActive, valid, line } = props;
 
   useEffect(() => {
-    let check = syllable === 10;
+    let check = syllablesCount === 10;
     if (check) {
       let word = value.split(" ").slice(-1)[0];
       while (punctuation.includes(word[word.length - 1]))
@@ -76,7 +76,7 @@ export default function InputField(props) {
         value={value}
         onChange={(ev) => {
           setValue(ev.target.value);
-          setSyllable((v) => syllableCount(value));
+          setSyllable((v) => syllable(value));
         }}
       />
     </>
