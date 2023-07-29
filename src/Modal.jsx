@@ -21,6 +21,7 @@ export default function Modal({ open, onClose }) {
           <p className="modal-data">This is also called Shakespearean Sonnet.</p>
           <p className="modal-data"><a className="modal-example" href="https://www.poetryfoundation.org/poems/45087/sonnet-18-shall-i-compare-thee-to-a-summers-day">▶Example</a></p>
         </div>
+        <a href="https://github.com/MJK1mjk/SonnetMuse.git" className="Repo-Link">Github Repo</a>
       </div>
     </div>
   );
