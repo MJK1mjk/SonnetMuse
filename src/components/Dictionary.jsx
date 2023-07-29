@@ -1,5 +1,4 @@
-import { useState,useEffect } from 'react';
-import scheme from './rhymingScheme'
+import { useState} from 'react';
 import './Rhymer.css'
 
 export default function Dictionary(){
@@ -21,7 +20,6 @@ export default function Dictionary(){
                     const def=j.definitions;
                     for(let k of def)
                     {
-                      // arr.push(`(${part}) ${k.definition}`)
                       const def=k.definition;
                       arr.push({part,def})
                     }

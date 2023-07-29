@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { syllableCount } from "syllable-count-english";
 import './InputField.css'
 
-const punctuation = [".", "?", "!", ",", ";", ":", "-"];
+const punctuation = [".", "?", "!", ",", ";", ":", "-"," "];
 
 export default function InputField(props) {
   const inputRef = useRef();
@@ -25,6 +25,7 @@ export default function InputField(props) {
   const handleKeyPress = (event) => {
     if (event.code === "Enter") {
       event.preventDefault();
+      setValue(v=>v.trim());
       const nextInput = inputRef.current.nextSibling;
       if (nextInput && nextInput.tagName === "INPUT") {
         changeActive(line + 1);
@@ -72,6 +73,7 @@ export default function InputField(props) {
         onKeyPress={handleKeyPress}
         onKeyDown={handleBack}
         onClick={handleOnClick}
+        value={value}
         onChange={(ev) => {
           setValue(ev.target.value);
           setSyllable((v) => syllableCount(value));

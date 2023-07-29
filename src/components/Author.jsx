@@ -6,12 +6,12 @@ export default function InputField(props) {
 
   const handleOnClick = () => changeActive(-1);
 
-  const handleKeyPress = (event) => {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      const nextInput = inputRef.current.nextSibling;
+  const handleBack = (event) => {
+    if (event.code === "Backspace") {
+      if(event.target.value) return;
+      const nextInput = inputRef.current.previousSibling;
       if (nextInput && nextInput.tagName === "INPUT") {
-        changeActive(0);
+        changeActive(line - 1);
         nextInput.focus();
         nextInput.setSelectionRange(
           nextInput.value.length,
@@ -22,16 +22,14 @@ export default function InputField(props) {
   };
 
   return (
-    <>
       <input
         type="text"
-        className="title"
-        placeholder="Title"
-        id='title'
+        className="author"
+        id="author"
+        placeholder="Author"
         ref={inputRef}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleBack}
         onClick={handleOnClick}
       />
-    </>
   );
 }
