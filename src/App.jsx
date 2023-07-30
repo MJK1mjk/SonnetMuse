@@ -1,40 +1,71 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import InputField from "./components/InputField";
 import Tabs from "./components/Tabs";
 import Title from "./components/Title";
 import Author from "./components/Author";
-import Modal from './Modal';
-import scheme from "./components/rhymingScheme";
+import Modal from './components/Modal';
+import Settings from './components/Settings';
 import rhymesWith from "rhymes-with";
-import { jsPDF } from "jspdf";
+import { syllable } from "syllable";
+import pdf from "./components/functions/pdfDownload"
+import LastWord from "./components/functions/LastWord";
+import rhymingSchemes from "./components/functions/rhymingScheme";
 import "./App.css";
 
 function App() {
-  const [rhymes, setRhymes] = useState(new Array(14).fill(""));
-  const [valid, setValid] = useState(new Array(14).fill(false));
+  const [lines, setLines] = useState(14);
+  const [rhymes, setRhymes] = useState(new Array(lines).fill(""));
+  const [valid, setValid] = useState(new Array(lines).fill(false));
   const [active, setActive] = useState(-1);
-  const [openModal, setOpenModal] = useState(true);
+  const [syllableNeeded, setSyllableNeeded] = useState(10);
+  const [openModal, setOpenModal] = useState(2);
   const [download, setDownload] = useState(false);
+  const [poem, setPoem] = useState(1);
+
+  const pattern=rhymingSchemes[poem];
 
   useEffect(() => {
     let newValid = [...valid];
-    let check=true;
-    for (let i = 0; i < 14; i++) {
-      if (rhymes[i]) {
-        let word = rhymes[scheme[i]];
-        if (word) {
-          const check = rhymesWith(rhymes[i], word, {
-            allPronounciations: true,
-          });
-          if (check) newValid[i] = true;
-          else newValid[i] = false;
-        }
+    rhymes.forEach((rhyme,i)=>{
+      if (rhyme) {
+        let word = rhymes[pattern[i]];
+        if (word) newValid[i] = rhymesWith(rhyme, word, {allPronounciations: true,});
       }
-      check&=newValid[i];
+      else newValid[i]=false;
+    })
+    setValid(newValid);
+  }, [rhymes,poem]);
+
+  useEffect(()=> {
+    let check=true;
+    valid.forEach( v => check &= v )
+    setDownload(check);
+  },[valid])
+  
+  useEffect(() => {
+    let newRhymes = new Array(lines).fill("");
+    let newValid = new Array(lines).fill(false);
+    for(let i =0;i<lines;i++){
+      newRhymes[i]=rhymes[i];
+      newValid[i]=valid[i];
     }
     setValid(newValid);
-    setDownload(check);
-  }, [rhymes]);
+    setRhymes(newRhymes);
+  }, [lines]);
+  
+  useEffect(() => {
+    let newRhymes = new Array(lines).fill("");
+    let newValid = new Array(lines).fill(false);
+    const poemLines = document.getElementsByClassName("InputField");
+    Array.from(poemLines).forEach((poemline,idx)=>{
+      if(syllable(poemline.value)===syllableNeeded){
+        newValid[idx]=true;
+        newRhymes[idx]=LastWord(poemline.value);
+      }
+    });
+    setValid(newValid);
+    setRhymes(newRhymes);
+  }, [syllableNeeded]);
 
   const changeRhyme = (val, id) => {
     let arr = [...rhymes];
@@ -44,17 +75,21 @@ function App() {
     }
   };
 
-  const changeActive = (val) => setActive(val);
+  const changeActive = val => setActive(val);
+
+  const pdfDownload = e => pdf(e,poem,download)
 
   const inputFields = [];
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < lines; i++) {
     inputFields.push(
       <InputField
         key={`line-${i}`}
         changeRhyme={changeRhyme}
         changeActive={changeActive}
         valid={valid}
+        syllableNeeded={syllableNeeded}
         line={i}
+        poem={poem}
       />
     );
   }
@@ -63,81 +98,45 @@ function App() {
     <div>
       <nav>
         <h1>SonnetMuse</h1>
-        <button onClick={() => setOpenModal(true)}>
+        <div>
+        <button onClick={() => setOpenModal(1)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-settings">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <button onClick={() => setOpenModal(2)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-info">
             <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
           </svg>
         </button>
+        </div>
       </nav>
       <main>
         <div className="Input-Container">
           <Title changeActive={changeActive} />
           {inputFields.map((a) => a)}
           <Author changeActive={changeActive} />
-          <button id="download" onClick={pdf} className={`${download ? "" : "hide"}`}>Download</button>
+          <button id="download" onClick={pdfDownload} className={`${download ? "" : "hide"}`}>Download</button>
         </div>
-        <Tabs rhymes={rhymes} active={active} />
+        <Tabs rhymes={rhymes} active={active} pattern={pattern}/>
       </main>
-      <Modal open={openModal} onClose={() => setOpenModal(false)}/>
+      <Modal 
+        open={openModal} 
+        onClose={() => setOpenModal(0)}
+      />
+      <Settings 
+        open={openModal} 
+        onClose={() => setOpenModal(0)}
+        syllableNeeded={syllableNeeded}
+        setSyllableNeeded={setSyllableNeeded}
+        lines={lines}
+        setLines={setLines}
+        poem={poem} 
+        setPoem={setPoem}
+      />
     </div>
   );
 }
 
 export default App;
-
-function pdf(e){
-  e.preventDefault();
-  if(download)
-  {
-    alert("The Sonnet is not completed or properly written");
-    return;
-  }
-  const doc = new jsPDF({ orientation: "potrait", unit: "mm", format: "a4",});
-  const width=doc.internal.pageSize.getWidth();
-  const height=doc.internal.pageSize.getHeight();
-  doc.setTextColor(0o0, 23, 66);
-  
-  const backgroundColor = "#f8f8f8";
-  doc.setFillColor(backgroundColor);
-  doc.rect(0, 0, width, height, "F");
-  const dotRadius = 0.2;
-  const dotColor = "#d9bf77";
-  doc.setFillColor(dotColor);
-  for(let y=5;y<height;y+=7){
-    let shift=((Math.ceil(y/7))%2)*3.5;
-    for(let i=5;i<width;i+=7){
-      doc.circle(i+shift,y, dotRadius, "F");
-    }
-  }
-
-  const top = document.getElementById('title');
-  const lines = document.getElementsByClassName('InputField')
-  const author = document.getElementById('author');
-  
-  doc.setFont("helvetica","normal","bold");
-  const title=top.value||lines[0].value;
-  let fontSize = 30;
-  doc.setFontSize(fontSize);
-  const titleWidth = doc.getTextWidth(title);
-  const titleX = (width - titleWidth) / 2;
-  doc.text(titleX, 20, title);
-  doc.setDrawColor(0o0, 23, 66);
-  doc.setLineWidth(0.5);
-  doc.line(titleX-5, 22, width-titleX+5, 22);
-  
-  doc.setFont("Times","italic","normal");
-  fontSize = 20;
-  doc.setFontSize(fontSize);
-  let ySpace=0;
-  for(let i=0;i<lines.length;i++)
-  {
-    if(i%4==0&i) ySpace+=2;
-    if(((Math.floor(i/4))%2)==0) doc.text(10,40+i*10+ySpace,lines[i].value);
-    else doc.text(width-10,40+i*10+ySpace,lines[i].value,{ align: "right" });
-  }
-  
-  doc.setFont("Times","normal","bold");
-  const name=author.value||"Anonymous";
-  doc.text(`-${name}`, width-10, 190,{ align: "right" });
-  doc.save(`${title}.pdf`);
-}

@@ -1,31 +1,25 @@
 import { useState, useRef, useEffect } from "react";
-import {syllable} from 'syllable'
-import './InputField.css'
-
-const punctuation = [".", "?", "!", ",", ";", ":", "-"," "];
+import { syllable } from "syllable";
+import LastWord from "./functions/LastWord";
+import "./styles/InputField.css";
 
 export default function InputField(props) {
   const inputRef = useRef();
   const [syllablesCount, setSyllable] = useState(0);
   const [value, setValue] = useState("");
-  const { changeRhyme, changeActive, valid, line } = props;
+  const { changeRhyme, changeActive, valid, line, syllableNeeded, poem } = props;
 
   useEffect(() => {
-    let check = syllablesCount === 10;
-    if (check) {
-      let word = value.split(" ").slice(-1)[0];
-      while (punctuation.includes(word[word.length - 1]))
-        word = word.slice(0, word.length - 1);
-      changeRhyme(word, line);
-    } else changeRhyme("", line);
-  }, [value]);
+    if (syllablesCount === syllableNeeded) changeRhyme(LastWord(value), line);
+    else changeRhyme("", line);
+  }, [value, syllableNeeded]);
 
   const handleOnClick = () => changeActive(line);
 
   const handleKeyPress = (event) => {
     if (event.code === "Enter") {
       event.preventDefault();
-      setValue(v=>v.trim());
+      setValue((v) => v.trim());
       const nextInput = inputRef.current.nextSibling;
       if (nextInput && nextInput.tagName === "INPUT") {
         changeActive(line + 1);
@@ -40,7 +34,7 @@ export default function InputField(props) {
 
   const handleBack = (event) => {
     if (event.code === "Backspace") {
-      if(event.target.value) return;
+      if (event.target.value) return;
       const nextInput = inputRef.current.previousSibling;
       if (nextInput && nextInput.tagName === "INPUT") {
         changeActive(line - 1);
@@ -51,15 +45,24 @@ export default function InputField(props) {
         );
       }
     }
-  }
+  };
 
-  const paraParity = (Math.floor(line/4))%2 === 1;
+  const paraParity = poem !== 2 ? Math.floor(line / 4) % 2 === 1 : line > 7;
 
   const inputStyle = {
     textAlign: paraParity ? "right" : "left",
     marginRight: paraParity ? 0 : "5%",
     marginLeft: paraParity ? "5%" : 0,
-    marginTop: !(line%4) ? "0.75rem" : 0,
+    marginTop:
+      poem !== 2
+        ? !(line % 4)
+          ? "0.75rem"
+          : 0
+        : line === 0 || line === 8
+        ? "1rem"
+        : line === 4 || line === 11
+        ? "0.5rem"
+        : 0,
   };
 
   return (
@@ -71,12 +74,12 @@ export default function InputField(props) {
         placeholder={`Line ${line + 1}`}
         ref={inputRef}
         onKeyPress={handleKeyPress}
-        onKeyDown={handleBack}
+        onKeyUp={handleBack}
         onClick={handleOnClick}
         value={value}
         onChange={(ev) => {
           setValue(ev.target.value);
-          setSyllable((v) => syllable(value));
+          setSyllable((v) => syllable(ev.target.value));
         }}
       />
     </>
